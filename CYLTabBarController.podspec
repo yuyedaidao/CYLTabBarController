@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.author       = { "ChenYilong" => "luohanchenyilong@163.com" }
   s.social_media_url = 'http://weibo.com/luohanchenyilong/'
   s.platform     = :ios, '8.0'
-  s.source       = { :git => "https://github.com/ChenYilong/CYLTabBarController.git", :tag => s.version.to_s }
+  s.source       = { :git => "https://github.com/yuyedaidao/CYLTabBarController.git", :tag => s.version.to_s }
  
   s.requires_arc = true
 
