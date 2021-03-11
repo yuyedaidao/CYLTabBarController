@@ -137,6 +137,10 @@ FOUNDATION_EXTERN CGFloat CYLTabBarHeight;
 
 - (UIWindow *)rootWindow;
 
+/// 更新TabBarItems 其内部其实也重新设置了viewControllers
+/// @param tabBarItemsAttributes tabBarItemsAttributes
+- (void)reloadTabBarItemsWithAttributes:(NSArray<NSDictionary *> *)tabBarItemsAttributes;
+
 @end
 
 @interface NSObject (CYLTabBarControllerReferenceExtension)

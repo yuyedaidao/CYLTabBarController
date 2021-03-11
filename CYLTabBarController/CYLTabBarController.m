@@ -309,6 +309,21 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
     return result;
 }
 
+- (void)reloadTabBarItemsWithAttributes:(NSArray<NSDictionary *> *)tabBarItemsAttributes {
+    _tabBarItemsAttributes = tabBarItemsAttributes;
+    self.invokeOnceViewDidLayoutSubViewsBlock = YES;
+    self.lottieViewAdded = NO;
+    [_lottieURLs removeAllObjects];
+    [_lottieSizes removeAllObjects];
+    NSInteger index = [self selectedIndex];
+    UIViewController *selected = _viewControllers[index];
+    UIView *superView = selected.view.superview;
+    [self setViewControllers:_viewControllers];
+    [self.view setNeedsLayout];
+    self.selectedIndex = index;
+    [superView addSubview:selected.view];
+}
+
 #pragma mark -
 #pragma mark - Private Methods
 
