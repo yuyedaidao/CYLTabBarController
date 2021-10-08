@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "CYLTabBarController"
-  s.version      = "5.1.1"
+  s.version      = "5.1.2"
   s.summary      = "Highly customizable tabBar and tabBarController for iOS"
   s.description  = "[EN]It is an iOS UI module library for adding animation to iOS tabbar items and icons with Lottie.  [CN]【中国特色 TabBar】一行代码实现 Lottie 动画TabBar，支持中间带+号的TabBar样式，自带红点角标，支持动态刷新。【iOS12 & iPhone XS MAX supported】"
   s.homepage     = "https://github.com/ChenYilong/CYLTabBarController"
@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Lottie' do |lottie|
     lottie.dependency 'CYLTabBarController/Core'
-    lottie.dependency "lottie-ios" , '~> 3.2.3'
+    lottie.dependency "lottie-ios" , '~> 2.5.3'
   end
 end
  
