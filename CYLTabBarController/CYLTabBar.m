@@ -15,7 +15,7 @@
 #import "CYLTabBar+CYLTabBarControllerExtention.h"
 
 static void *const CYLTabBarContext = (void*)&CYLTabBarContext;
-
+static void *const CYLTabBarAlpha = (void*)&CYLTabBarAlpha;
 @interface CYLTabBar ()
 
 /** 发布按钮 */
@@ -23,7 +23,7 @@ static void *const CYLTabBarContext = (void*)&CYLTabBarContext;
 @property (nonatomic, assign) CGFloat tabBarItemWidth;
 @property (nonatomic, copy) NSArray<UIControl *> *tabBarButtonArray;
 @property (nonatomic, assign, getter=hasAddPlusButton) BOOL addPlusButton;
-
+@property (nonatomic, copy) NSMutableSet<UIView *> *observedViews;
 @end
 
 @implementation CYLTabBar
@@ -73,6 +73,7 @@ static void *const CYLTabBarContext = (void*)&CYLTabBarContext;
 - (instancetype)sharedInit {
     // KVO注册监听
     _tabBarItemWidth = CYLTabBarItemWidth;
+    _observedViews = [NSMutableSet set];
     [self addObserver:self forKeyPath:@"tabBarItemWidth" options:NSKeyValueObservingOptionNew context:CYLTabBarContext];
     return self;
 }
@@ -155,7 +156,17 @@ static void *const CYLTabBarContext = (void*)&CYLTabBarContext;
     [self setupTabImageViewDefaultOffset:self.tabBarButtonArray[0]];
     CGFloat tabBarWidth = self.bounds.size.width;
     CGFloat tabBarHeight = self.bounds.size.height;
-    
+    // FIX: iOS15有时候会导致TaBar透明的问题 但是这样会导致无法主动让TabBar透明 考虑以后添加属性控制
+    UIView *effectView = self.cyl_tabBackgroundView.cyl_tabEffectView;
+    UIView *shadowView = self.cyl_tabShadowImageView.subviews.firstObject;
+    if (![self.observedViews containsObject:effectView]) {
+        [self.observedViews addObject:effectView];
+        [effectView addObserver:self forKeyPath:@"alpha" options:NSKeyValueObservingOptionNew context:CYLTabBarAlpha];
+    }
+    if (![self.observedViews containsObject:shadowView]) {
+        [self.observedViews addObject:shadowView];
+        [shadowView addObserver:self forKeyPath:@"alpha" options:NSKeyValueObservingOptionNew context:CYLTabBarAlpha];
+    }
     if (!self.addPlusButton) {
         return;
     }
@@ -228,6 +239,14 @@ static void *const CYLTabBarContext = (void*)&CYLTabBarContext;
     [childView cyl_setTabBarItemVisibleIndex:index];
 }
 
+- (void)setItems:(NSArray<UITabBarItem *> *)items {
+    [super setItems:items];
+}
+
+- (void)setItems:(NSArray<UITabBarItem *> *)items animated:(BOOL)animated {
+    [super setItems:items animated:animated];
+ }
+
 #pragma mark -
 #pragma mark - Private Methods
 
@@ -237,6 +256,12 @@ static void *const CYLTabBarContext = (void*)&CYLTabBarContext;
 
 // KVO监听执行
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (context == CYLTabBarAlpha) {
+        if ([change[NSKeyValueChangeNewKey] floatValue] == 0) {
+            ((UIView *)object).alpha = 1;
+        }
+        return;
+    }
     if(context != CYLTabBarContext) {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
         return;
@@ -252,6 +277,9 @@ static void *const CYLTabBarContext = (void*)&CYLTabBarContext;
 - (void)dealloc {
     // KVO反注册
     [self removeObserver:self forKeyPath:@"tabBarItemWidth"];
+    [_observedViews enumerateObjectsUsingBlock:^(UIView * _Nonnull obj, BOOL * _Nonnull stop) {
+        [self removeObserver:obj forKeyPath:@"alpha"];
+    }];
 }
 
 - (void)setTabBarItemWidth:(CGFloat )tabBarItemWidth {
