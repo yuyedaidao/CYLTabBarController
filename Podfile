@@ -7,10 +7,10 @@ target 'CYLTabBarController' do
   use_frameworks!
 
 #pod 'CYLTabBarController', '~> 1.28.5'        # 默认不依赖Lottie
-pod 'CYLTabBarController/Lottie', '~> 1.29.0'  # 依赖Lottie库
+#pod 'CYLTabBarController/Lottie'  # 依赖Lottie库
 
 #pod 'CYLTabBarController', :path => './'
-#pod 'CYLTabBarController/Lottie', :path => './'
+pod 'CYLTabBarController/Lottie', :path => './'
 
 pod 'MJRefresh'
 

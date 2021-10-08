@@ -15,7 +15,6 @@
 #import <Lottie/Lottie.h>
 #else
 #endif
-
 @implementation UIControl (CYLTabBarControllerExtention)
 
 - (BOOL)cyl_isChildViewControllerPlusButton {
