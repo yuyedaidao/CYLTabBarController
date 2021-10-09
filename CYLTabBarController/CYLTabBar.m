@@ -156,7 +156,7 @@ static void *const CYLTabBarAlpha = (void*)&CYLTabBarAlpha;
     [self setupTabImageViewDefaultOffset:self.tabBarButtonArray[0]];
     CGFloat tabBarWidth = self.bounds.size.width;
     CGFloat tabBarHeight = self.bounds.size.height;
-    // FIX: iOS15有时候会导致TaBar透明的问题 但是这样会导致无法主动让TabBar透明 考虑以后添加属性控制
+    // FIX: iOS15有时候会导致TaBar透明的问题 但是这样会导致无法主动让TabBar透明 考虑以后添加属性 // 现在通过判断isHidden来处理，如果隐藏了就不再修改alpha
     UIView *effectView = self.cyl_tabBackgroundView.cyl_tabEffectView;
     UIView *shadowView = self.cyl_tabShadowImageView.subviews.firstObject;
     if (![self.observedViews containsObject:effectView]) {
@@ -239,14 +239,6 @@ static void *const CYLTabBarAlpha = (void*)&CYLTabBarAlpha;
     [childView cyl_setTabBarItemVisibleIndex:index];
 }
 
-- (void)setItems:(NSArray<UITabBarItem *> *)items {
-    [super setItems:items];
-}
-
-- (void)setItems:(NSArray<UITabBarItem *> *)items animated:(BOOL)animated {
-    [super setItems:items animated:animated];
- }
-
 #pragma mark -
 #pragma mark - Private Methods
 
@@ -257,8 +249,11 @@ static void *const CYLTabBarAlpha = (void*)&CYLTabBarAlpha;
 // KVO监听执行
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (context == CYLTabBarAlpha) {
-        if ([change[NSKeyValueChangeNewKey] floatValue] == 0) {
-            ((UIView *)object).alpha = 1;
+        UIView *view = object;
+        if (!view.isHidden) {
+            if ([change[NSKeyValueChangeNewKey] floatValue] == 0) {
+                view.alpha = 1;
+            }
         }
         return;
     }
@@ -278,7 +273,7 @@ static void *const CYLTabBarAlpha = (void*)&CYLTabBarAlpha;
     // KVO反注册
     [self removeObserver:self forKeyPath:@"tabBarItemWidth"];
     [_observedViews enumerateObjectsUsingBlock:^(UIView * _Nonnull obj, BOOL * _Nonnull stop) {
-        [self removeObserver:obj forKeyPath:@"alpha"];
+        [obj removeObserver:self forKeyPath:@"alpha"];
     }];
 }
 
