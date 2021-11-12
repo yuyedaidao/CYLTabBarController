@@ -296,7 +296,7 @@
     LOTAnimationView *lottieView = [[LOTAnimationView alloc] initWithContentsOfURL:lottieURL];
     lottieView.frame = CGRectMake(0, 0, size.width, size.height);
     lottieView.userInteractionEnabled = NO;
-    lottieView.contentMode = UIViewContentModeScaleAspectFill;
+    lottieView.contentMode = UIViewContentModeScaleAspectFit;
     lottieView.translatesAutoresizingMaskIntoConstraints = NO;
     [lottieView setClipsToBounds:NO];
     [tabButton cyl_replaceTabImageViewWithNewView:lottieView show:YES];
