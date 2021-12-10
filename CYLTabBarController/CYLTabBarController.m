@@ -714,9 +714,9 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
     NSURL *lottieURL = self.lottieURLs[index];
     NSValue *lottieSizeValue = self.lottieSizes[index];
     CGSize lottieSize = [lottieSizeValue CGSizeValue];
-    [control cyl_addLottieImageWithLottieURL:lottieURL size:lottieSize];
+    [control cyl_addLottieImageWithLottieURL:lottieURL size:lottieSize contentMode:self.lottieAnimationViewContentMode];
     if (animation) {
-        [self.tabBar cyl_animationLottieImageWithSelectedControl:control lottieURL:lottieURL size:lottieSize defaultSelected:defaultSelected];
+        [self.tabBar cyl_animationLottieImageWithSelectedControl:control lottieURL:lottieURL size:lottieSize defaultSelected:defaultSelected contentMode:self.lottieAnimationViewContentMode];
     }
 }
 
