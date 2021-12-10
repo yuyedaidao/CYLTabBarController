@@ -163,11 +163,11 @@
                                     defaultSelected:(BOOL)defaultSelected
                                         contentMode:(UIViewContentMode)contentMode {
 #if __has_include(<Lottie/Lottie.h>)
-    [selectedControl cyl_addLottieImageWithLottieURL:lottieURL size:size];
+    [selectedControl cyl_addLottieImageWithLottieURL:lottieURL size:size contentMode:contentMode];
     [self cyl_stopAnimationOfAllLottieView];
     LOTAnimationView *lottieView = selectedControl.cyl_lottieAnimationView;
     if (!lottieView) {
-        [selectedControl cyl_addLottieImageWithLottieURL:lottieURL size:size];
+        [selectedControl cyl_addLottieImageWithLottieURL:lottieURL size:size contentMode:contentMode];
     }
     if (lottieView && [lottieView isKindOfClass:[LOTAnimationView class]]) {
         if (defaultSelected) {
