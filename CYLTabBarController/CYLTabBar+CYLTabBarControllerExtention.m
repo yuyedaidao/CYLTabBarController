@@ -160,7 +160,8 @@
 - (void)cyl_animationLottieImageWithSelectedControl:(UIControl *)selectedControl
                                           lottieURL:(NSURL *)lottieURL
                                                size:(CGSize)size
-                                    defaultSelected:(BOOL)defaultSelected {
+                                    defaultSelected:(BOOL)defaultSelected
+                                        contentMode:(UIViewContentMode)contentMode {
 #if __has_include(<Lottie/Lottie.h>)
     [selectedControl cyl_addLottieImageWithLottieURL:lottieURL size:size];
     [self cyl_stopAnimationOfAllLottieView];

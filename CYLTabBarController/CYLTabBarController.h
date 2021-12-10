@@ -79,6 +79,9 @@ FOUNDATION_EXTERN CGFloat CYLTabBarHeight;
 
 @property (nonatomic, strong) CYLTabBar *tabBar;
 
+/// 动画视图的渲染模式 只有集成了lottie动画才会生效
+@property (nonatomic, assign) UIViewContentMode lottieAnimationViewContentMode;
+
 /*! 
  * To set both UIBarItem label text attributes in the tabBar,
  * use the following to tweak the relative position of the label within the tab button (for handling visual centering corrections if needed because of custom text attributes)

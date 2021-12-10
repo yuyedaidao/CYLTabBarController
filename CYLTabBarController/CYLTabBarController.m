@@ -231,6 +231,7 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
         _tabBarItemsAttributes = tabBarItemsAttributes;
         self.context = context;
         self.viewControllers = viewControllers;
+        self.lottieAnimationViewContentMode = UIViewContentModeScaleAspectFit;
     }
     return self;
 }

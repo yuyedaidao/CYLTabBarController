@@ -20,7 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)cyl_animationLottieImageWithSelectedControl:(UIControl *)selectedControl
                                           lottieURL:(NSURL *)lottieURL
                                                size:(CGSize)size
-                                          defaultSelected:(BOOL)defaultSelected;
+                                    defaultSelected:(BOOL)defaultSelected
+                                        contentMode:(UIViewContentMode)contentMode;
 - (void)cyl_stopAnimationOfAllLottieView;
 - (NSArray *)cyl_originalTabBarButtons;
 - (BOOL)cyl_hasPlusChildViewController;

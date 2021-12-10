@@ -287,7 +287,8 @@
 }
 
 - (void)cyl_addLottieImageWithLottieURL:(NSURL *)lottieURL
-                                   size:(CGSize)size {
+                                   size:(CGSize)size
+                            contentMode:(UIViewContentMode)contentMode {
 #if __has_include(<Lottie/Lottie.h>)
     if (self.cyl_lottieAnimationView) {
         return;
@@ -296,7 +297,7 @@
     LOTAnimationView *lottieView = [[LOTAnimationView alloc] initWithContentsOfURL:lottieURL];
     lottieView.frame = CGRectMake(0, 0, size.width, size.height);
     lottieView.userInteractionEnabled = NO;
-    lottieView.contentMode = UIViewContentModeScaleAspectFit;
+    lottieView.contentMode = contentMode;
     lottieView.translatesAutoresizingMaskIntoConstraints = NO;
     [lottieView setClipsToBounds:NO];
     [tabButton cyl_replaceTabImageViewWithNewView:lottieView show:YES];
