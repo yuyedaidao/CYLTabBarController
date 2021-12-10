@@ -293,14 +293,20 @@
     if (self.cyl_lottieAnimationView) {
         return;
     }
+    
     UIControl *tabButton = self;
-    LOTAnimationView *lottieView = [[LOTAnimationView alloc] initWithContentsOfURL:lottieURL];
+    NSData *animationData = [NSData dataWithContentsOfURL:lottieURL];
+    NSDictionary  *animationJSON = [NSJSONSerialization JSONObjectWithData:animationData
+                                                                   options:0 error:NULL];
+    LOTComposition *model = [[LOTComposition alloc] initWithJSON:animationJSON withAssetBundle: [NSBundle mainBundle]];
+    LOTAnimationView *lottieView = [[LOTAnimationView alloc] initWithModel:model inBundle: [NSBundle mainBundle]];
     lottieView.frame = CGRectMake(0, 0, size.width, size.height);
     lottieView.userInteractionEnabled = NO;
     lottieView.contentMode = contentMode;
     lottieView.translatesAutoresizingMaskIntoConstraints = NO;
     [lottieView setClipsToBounds:NO];
     [tabButton cyl_replaceTabImageViewWithNewView:lottieView show:YES];
+    
 #else
 #endif
 
