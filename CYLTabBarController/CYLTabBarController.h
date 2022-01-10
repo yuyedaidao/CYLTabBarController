@@ -88,6 +88,9 @@ FOUNDATION_EXTERN CGFloat CYLTabBarHeight;
  */
 @property (nonatomic, readonly, assign) UIOffset titlePositionAdjustment;
 
+/// 如果用户设置的TabBarItemImageViewSize不合规，则依据父视图大小来调整，否则依据默认的imageView的大小来调整
+@property (nonatomic, assign) BOOL adjustTabBarItemImageViewSizeDependOnSuperView;
+
 @property (nonatomic, readonly, copy) NSString *context;
 
 - (instancetype)initWithViewControllers:(NSArray<UIViewController *> *)viewControllers

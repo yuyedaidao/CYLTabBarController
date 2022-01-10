@@ -200,10 +200,15 @@
         return;
     }
     if (newView.frame.size.width == 0 || newView.frame.size.height == 0 || newView.frame.size.width > tabBarButton.frame.size.width || newView.frame.size.height > tabBarButton.frame.size.height) {
-        UIImage *image = swappableImageView.image;
+        
         newView.frame = ({
             CGRect frame = newView.frame;
-            frame.size = CGSizeMake(image.size.width, image.size.height);
+            if (self.cyl_tabBarController.adjustTabBarItemImageViewSizeDependOnSuperView) {
+                frame.size = tabBarButton.frame.size;
+            } else {
+                UIImage *image = swappableImageView.image;
+                frame.size = CGSizeMake(image.size.width, image.size.height);
+            }
             frame;
         });
     }

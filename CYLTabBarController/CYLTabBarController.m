@@ -229,6 +229,7 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
         _imageInsets = imageInsets;
         _titlePositionAdjustment = titlePositionAdjustment;
         _tabBarItemsAttributes = tabBarItemsAttributes;
+        _adjustTabBarItemImageViewSizeDependOnSuperView = YES;
         self.context = context;
         self.viewControllers = viewControllers;
     }
