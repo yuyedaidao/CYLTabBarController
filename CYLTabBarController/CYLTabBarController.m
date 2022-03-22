@@ -77,8 +77,10 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
 - (void)setSelectedViewController:(__kindof UIViewController *)selectedViewController {
     [super setSelectedViewController:selectedViewController];
     // Fix: 解决iOS15有时候TabBar会变透明的问题
-    self.tabBar.cyl_tabBackgroundView.cyl_tabEffectView.alpha = 1;
-    self.tabBar.cyl_tabShadowImageView.subviews.firstObject.alpha = 1;
+    if ([UITabBar appearance].backgroundImage == nil) {
+        self.tabBar.cyl_tabBackgroundView.cyl_tabEffectView.alpha = 1;
+        self.tabBar.cyl_tabShadowImageView.subviews.firstObject.alpha = 1;
+    }
 }
 
 - (void)setViewDidLayoutSubViewsBlockInvokeOnce:(BOOL)invokeOnce block:(CYLViewDidLayoutSubViewsBlock)viewDidLayoutSubviewsBlock  {

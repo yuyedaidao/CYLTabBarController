@@ -158,15 +158,26 @@ static void *const CYLTabBarAlpha = (void*)&CYLTabBarAlpha;
     CGFloat tabBarHeight = self.bounds.size.height;
     // FIX: iOS15有时候会导致TaBar透明的问题 但是这样会导致无法主动让TabBar透明 考虑以后添加属性 // 现在通过判断isHidden来处理，如果隐藏了就不再修改alpha
     if (CYL_SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.0")) {
-        UIView *effectView = self.cyl_tabBackgroundView.cyl_tabEffectView;
+        [self removeAlphaObserver];
+        UIView *backgroundView = self.cyl_tabBackgroundView;
         UIView *shadowView = self.cyl_tabShadowImageView.subviews.firstObject;
-        if (effectView && ![self.observedViews containsObject:effectView]) {
-            [self.observedViews addObject:effectView];
-            [effectView addObserver:self forKeyPath:@"alpha" options:NSKeyValueObservingOptionNew context:CYLTabBarAlpha];
-        }
+        
         if (shadowView && ![self.observedViews containsObject:shadowView]) {
             [self.observedViews addObject:shadowView];
             [shadowView addObserver:self forKeyPath:@"alpha" options:NSKeyValueObservingOptionNew context:CYLTabBarAlpha];
+        }
+        if ([UITabBar appearance].backgroundImage) {
+            UIView *imageView = backgroundView.cyl_imageView;
+            if (imageView && ![self.observedViews containsObject:imageView]) {
+                [self.observedViews addObject:imageView];
+                [imageView addObserver:self forKeyPath:@"alpha" options:NSKeyValueObservingOptionNew context:CYLTabBarAlpha];
+            }
+        } else {
+            UIView *effectView = backgroundView.cyl_tabEffectView;
+            if (effectView && ![self.observedViews containsObject:effectView]) {
+                [self.observedViews addObject:effectView];
+                [effectView addObserver:self forKeyPath:@"alpha" options:NSKeyValueObservingOptionNew context:CYLTabBarAlpha];
+            }
         }
     }
     if (!self.addPlusButton) {
@@ -274,10 +285,15 @@ static void *const CYLTabBarAlpha = (void*)&CYLTabBarAlpha;
 - (void)dealloc {
     // KVO反注册
     [self removeObserver:self forKeyPath:@"tabBarItemWidth"];
+    [self removeAlphaObserver];
+}
+
+- (void)removeAlphaObserver {
     if (CYL_SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"15.0")) {
         [_observedViews enumerateObjectsUsingBlock:^(UIView * _Nonnull obj, BOOL * _Nonnull stop) {
             [obj removeObserver:self forKeyPath:@"alpha"];
         }];
+        [_observedViews removeAllObjects];
     }
 }
 

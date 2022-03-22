@@ -29,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIVisualEffectView *)cyl_tabEffectView;
 - (BOOL)cyl_isLottieAnimationView;
 - (UIView *)cyl_tabBackgroundView;
+- (UIImageView *)cyl_imageView;
 + (UIView *)cyl_tabBadgePointViewWithClolor:(UIColor *)color radius:(CGFloat)radius;
 - (NSArray *)cyl_allSubviews;
 

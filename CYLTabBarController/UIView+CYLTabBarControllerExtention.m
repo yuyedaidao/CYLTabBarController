@@ -133,6 +133,15 @@
     return [self cyl_tabBackgroundView];
 }
 
+- (UIImageView *)cyl_imageView {
+    for (UIImageView *subview in self.subviews) {
+        if ([subview isKindOfClass:[UIImageView class]]) {
+            return (UIImageView *)subview;
+        }
+    }
+    return nil;
+}
+
 - (UIImageView *)cyl_tabShadowImageView {
     if (@available(iOS 10.0, *)) {
         //iOS10及以上这样获取ShadowImageView：
