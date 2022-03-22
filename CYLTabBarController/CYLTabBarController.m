@@ -334,7 +334,11 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
     NSInteger index = [self selectedIndex];
     UIViewController *selected = _viewControllers[index];
     UIView *superView = selected.view.superview;
-    [self setViewControllers:_viewControllers];
+    NSMutableArray<UIViewController *> *viewControllers = [_viewControllers mutableCopy];
+    if ([self hasPlusChildViewController]) {
+        [viewControllers removeObjectAtIndex: CYLPlusButtonIndex];
+    }
+    [self setViewControllers: viewControllers];
     [self.view setNeedsLayout];
     self.selectedIndex = index;
     [superView addSubview:selected.view];
