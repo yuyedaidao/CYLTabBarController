@@ -185,11 +185,12 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
         plusButton.selected = NO;
         [plusButton removeFromSuperview];
     }
-    BOOL isAdded = [self isPlusViewControllerAdded:_viewControllers];
-    BOOL hasPlusChildViewController = [self hasPlusChildViewController] && isAdded;
-    if (isAdded && hasPlusChildViewController && CYLPlusChildViewController.cyl_plusViewControllerEverAdded == YES) {
-        [CYLPlusChildViewController cyl_setPlusViewControllerEverAdded:NO];
-    }
+    /// MARK: 这里是全局处理，如果生成新的，这里操作时会破坏新的视图展示
+    // BOOL isAdded = [self isPlusViewControllerAdded:_viewControllers];
+    // BOOL hasPlusChildViewController = [self hasPlusChildViewController] && isAdded;
+    // if (isAdded && hasPlusChildViewController && CYLPlusChildViewController.cyl_plusViewControllerEverAdded == YES) {
+    //    [CYLPlusChildViewController cyl_setPlusViewControllerEverAdded:NO];
+    // }
     // KVO反注册
     if (self.tabBar && self.isObservingTabImageViewDefaultOffset) {
         @try {
