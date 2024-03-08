@@ -65,6 +65,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (BOOL)shouldSelectPlusChildViewController;
 
+/*!
+* 可点击的范围
+*/
+- (CGRect)touchableRect;
+
 #pragma mark - Deprecated API
 
 + (CGFloat)multiplerInCenterY CYL_DEPRECATED("Deprecated in 1.6.0. Use `+multiplierOfTabBarHeight:` instead.");

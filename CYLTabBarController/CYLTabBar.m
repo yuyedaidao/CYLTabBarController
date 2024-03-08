@@ -414,7 +414,7 @@ static void *const CYLTabBarAlpha = (void*)&CYLTabBarAlpha;
     }
     
     if (self.plusButton) {
-        CGRect plusButtonFrame = self.plusButton.frame;
+        CGRect plusButtonFrame = [self.plusButton touchableRect];
         BOOL isInPlusButtonFrame = CGRectContainsPoint(plusButtonFrame, point);
         if (isInPlusButtonFrame) {
             return self.plusButton;

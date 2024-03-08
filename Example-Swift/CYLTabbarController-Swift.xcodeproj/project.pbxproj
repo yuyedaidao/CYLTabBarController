@@ -423,7 +423,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-CYLTabBarController-Swift/Pods-CYLTabBarController-Swift-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-CYLTabBarController-Swift/Pods-CYLTabBarController-Swift-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/CYLTabBarController/CYLTabBarController.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -432,7 +432,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CYLTabBarController-Swift/Pods-CYLTabBarController-Swift-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CYLTabBarController-Swift/Pods-CYLTabBarController-Swift-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CDF94486ED41F7591F19980E /* [CP] Check Pods Manifest.lock */ = {

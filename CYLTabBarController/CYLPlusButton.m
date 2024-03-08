@@ -91,4 +91,7 @@ UIViewController *CYLPlusChildViewController = nil;
  */
 - (void)setHighlighted:(BOOL)highlighted {}
 
+- (CGRect)touchableRect {
+    return self.frame;
+}
 @end
