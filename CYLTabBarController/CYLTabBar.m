@@ -150,6 +150,9 @@ static void *const CYLTabBarAlpha = (void*)&CYLTabBarAlpha;
     [super layoutSubviews];
     self.tabBarButtonArray = [self cyl_originalTabBarButtons];
     if (self.tabBarButtonArray.count == 0) {
+        if (self.didLayoutSubViewsBlock) {
+            self.didLayoutSubViewsBlock(self);
+        }
         return;
     }
     [self presetUnselectedItemTintColor];
@@ -181,6 +184,9 @@ static void *const CYLTabBarAlpha = (void*)&CYLTabBarAlpha;
         }
     }
     if (!self.addPlusButton) {
+        if (self.didLayoutSubViewsBlock) {
+            self.didLayoutSubViewsBlock(self);
+        }
         return;
     }
     
@@ -196,6 +202,9 @@ static void *const CYLTabBarAlpha = (void*)&CYLTabBarAlpha;
                                 index:buttonIndex
              ];
         }];
+        if (self.didLayoutSubViewsBlock) {
+            self.didLayoutSubViewsBlock(self);
+        }
         return;
     }
     CYLTabBarItemWidth = (tabBarWidth - CYLPlusButtonWidth) / CYLTabbarItemsCount;
@@ -237,6 +246,9 @@ static void *const CYLTabBarAlpha = (void*)&CYLTabBarAlpha;
     }];
     //bring the plus button to top
     [self bringSubviewToFront:_plusButton];
+    if (self.didLayoutSubViewsBlock) {
+        self.didLayoutSubViewsBlock(self);
+    }
 }
 
 - (void)changeXForChildView:(UIControl *)childView

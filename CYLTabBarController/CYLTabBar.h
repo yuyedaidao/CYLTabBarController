@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^CYLTabBarDidLayoutSubViewsBlock)(CYLTabBar *tabBar);
+
 @interface CYLTabBar : UITabBar
 
 /*!
@@ -21,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *context;
 
+@property (nonatomic, copy) CYLTabBarDidLayoutSubViewsBlock didLayoutSubViewsBlock;
 @end
 
 NS_ASSUME_NONNULL_END
