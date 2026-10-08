@@ -2,11 +2,10 @@
 //  CYLPlusButton.h
 //  CYLTabBarController
 //
-//  v1.21.x Created by 微博@iOS程序犭袁 ( http://weibo.com/luohanchenyilong/ ) on 10/20/15.
-//  Copyright © 2018 https://github.com/ChenYilong . All rights reserved.
+//  v1.99.x Created by 微博@iOS程序犭袁 ( http://weibo.com/luohanchenyilong/ ) on 10/20/15.
+//  Copyright © 2026 https://github.com/ChenYilong . All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "CYLConstants.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -17,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @required
 + (id)plusButton;
+
 @optional
 
 /*!
@@ -27,26 +27,43 @@ NS_ASSUME_NONNULL_BEGIN
  * @return 用来自定义加号按钮在 TabBar 中的位置。
  *
  */
-+ (NSUInteger)indexOfPlusButtonInTabBar;
+    +(NSUInteger)indexOfPlusButtonInTabBar;
 
 /*!
  * 该方法是为了调整 PlusButton 中心点Y轴方向的位置，建议在按钮超出了 tabbar 的边界时实现该方法。
  * @attention 如果不实现该方法，内部会自动进行比对，预设一个较为合适的位置，如果实现了该方法，预设的逻辑将失效。
+ * 但是 iOS26+ 系统， Liquid Glass 效果下， 自定义后，需要实现代理方法如下， 隐藏玻璃遮罩，
+ 见 issue#636 讨论：
+
+ - (void)tabBarController:(UITabBarController *)tabBarController didSelectControl:(UIControl *)control {
+if ([tabBarController.selectedViewController isEqual:CYLPlusChildViewController]) {
+    [self.tabBar.cyl_platterLiquidLensViewContentView cyl_setHidden:YES];
+} else {
+    [self.tabBar.cyl_platterLiquidLensViewContentView cyl_setHidden:NO];
+}
  * @return 返回值是自定义按钮中心点Y轴方向的坐标除以 tabbar 的高度，
            内部实现时，会使用该返回值来设置 PlusButton 的 centerY 坐标，公式如下：
               `PlusButtonCenterY = multiplierOfTabBarHeight * tabBarHeight + constantOfPlusButtonCenterYOffset;`
            也就是说：如果 constantOfPlusButtonCenterYOffset 为0，同时 multiplierOfTabBarHeight 的值是0.5，表示 PlusButton 居中，小于0.5表示 PlusButton 偏上，大于0.5则表示偏下。
- *
+
  */
-+ (CGFloat)multiplierOfTabBarHeight:(CGFloat)tabBarHeight;
++(CGFloat)multiplierOfTabBarHeight:(CGFloat)tabBarHeight;
 
 /*!
  * 见 `+multiplierOfTabBarHeight:` 注释：
  * `PlusButtonCenterY = multiplierOfTabBarHeight * tabBarHeight + constantOfPlusButtonCenterYOffset;`
  * 也就是说： constantOfPlusButtonCenterYOffset 大于0会向下偏移，小于0会向上偏移。
- * @attention 实现了该方法，但没有实现 `+multiplierOfTabBarHeight:` 方法，在这种情况下，会在预设逻辑的基础上进行偏移。
+ * @attention 实现了该方法，但没有实现 `+multiplierOfTabBarHeight:` 方法，在这种情况下，会在预设逻辑的基础上进行偏移。但是 iOS26+ 系统， Liquid Glass 效果下， 自定义后，需要实现代理方法如下， 隐藏玻璃遮罩，
+ 见 issue#636 讨论：
+  - (void)tabBarController:(UITabBarController *)tabBarController didSelectControl:(UIControl *)control {
+ if ([tabBarController.selectedViewController isEqual:CYLPlusChildViewController]) {
+     [self.tabBar.cyl_platterLiquidLensViewContentView cyl_setHidden:YES];
+ } else {
+     [self.tabBar.cyl_platterLiquidLensViewContentView cyl_setHidden:NO];
+ }
+
  */
-+ (CGFloat)constantOfPlusButtonCenterYOffsetForTabBarHeight:(CGFloat)tabBarHeight;
++(CGFloat)constantOfPlusButtonCenterYOffsetForTabBarHeight:(CGFloat)tabBarHeight;
 
 /*!
  * 实现该方法后，能让 PlusButton 的点击效果与跟点击其他 TabBar 按钮效果一样，跳转到该方法指定的 UIViewController 。
@@ -54,48 +71,105 @@ NS_ASSUME_NONNULL_BEGIN
  * @return 指定 PlusButton 点击后跳转的 UIViewController。
  *
  */
-+ (UIViewController *)plusChildViewController;
++(UIViewController*)plusChildViewController;
 
 /*!
- * 
+ *
  Asks the delegate whether the specified view controller should be made active.
  Return YES if the view controller’s tab should be selected or NO if the current tab should remain active.
  Returns YES true if the view controller’s tab should be selected or
          NO  false if the current tab should remain active.
  */
-+ (BOOL)shouldSelectPlusChildViewController;
++(BOOL)shouldSelectPlusChildViewController;
+
+/** 可以不设置， 默认为 CYLTabBarController，如果设置了，请 与 CYLTabBarController 里 context 并保持一致。如果两个都不是实现，默认为一致均为 CYLTabBarController */
++(NSString*)tabBarContext;
 
 /*!
-* 可点击的范围
+* 可点击的范围,
+ //TODO:  更换使用 padding 会更直观。
 */
-- (CGRect)touchableRect;
+-(CGRect)touchableRect;
 
-#pragma mark - Deprecated API
+/*!
+ * iOS26+ selectedContentView 只有在选中状态下会显示。
+ */
++(UIButton*)selectedContentView;
 
-+ (CGFloat)multiplerInCenterY CYL_DEPRECATED("Deprecated in 1.6.0. Use `+multiplierOfTabBarHeight:` instead.");
+/*!
+ * iOS26+
+ */
++(UIImage*)contentImage;
 
-+ (NSString *)tabBarContext;
+/*!
+ * iOS26+  如果plusButton只有图片没有label，更简单的方式是实现下面这个代理。
+ */
++(UIImage*)selectedContentImage;
+
+/*!
+ * iOS26+
+ */
+@property(nonatomic, weak) __kindof UIButton* selectedContentView;
+
+/*!
+ * Snapshot of plusButton, iOS26+
+ */
+@property(nonatomic, strong) UIImage* selectedContentImage;
+
+/*!
+ * Snapshot of plusButton, iOS26+
+ */
+@property(nonatomic, strong) UIImage* contentImage;
+
+-(BOOL)isLayoutCentered;
+
++(BOOL)matchedTabBarContext:(NSString*)tabBarContext;
 
 @end
 
 @class CYLTabBar;
 
-FOUNDATION_EXTERN UIButton<CYLPlusButtonSubclassing> *CYLExternPlusButton;
-FOUNDATION_EXTERN UIViewController *CYLPlusChildViewController;
+FOUNDATION_EXTERN CYLPlusButton<CYLPlusButtonSubclassing>* CYLExternPlusButton;
+FOUNDATION_EXTERN UIViewController* CYLPlusChildViewController;
 
 @interface CYLPlusButton : UIButton
 
-+ (void)registerPlusButton;
-+ (void)removePlusButton;
-- (void)plusChildViewControllerButtonClicked:(UIButton<CYLPlusButtonSubclassing> *)sender;
+/*!
+ * plusButton state:
+ * Register + Context match == Active
+ */
+    +(void)registerPlusButton;
+
++(void)removePlusButton;
+
+-(void)plusChildViewControllerButtonClicked:(UIButton<CYLPlusButtonSubclassing> *)sender;
+
+/*!
+ * plusButton state:
+ * Register + Context match == Active
+ */
++(NSString*)matchedTabBarContext;
+
++(BOOL)hasPlusButtonForTabBarContext:(NSString*)tabBarContext;
+
++(BOOL)hasPlusChildViewControllerForTabBarContext:(NSString*)tabBarContext;
+
+-(CGFloat)multiplierOfTabBarHeight:(CGFloat)tabBarHeight;
+
+-(CGFloat)constantOfPlusButtonCenterYOffsetForTabBarHeight:(CGFloat)tabBarHeight;
+
++(NSUInteger)indexForTabbarItemsCount:(NSUInteger)tabbarItemsCount;
+-(void)setTabLabelHidden:(BOOL)hidden;
 
 @end
 
 #pragma mark - Deprecated API
 
-@interface CYLPlusButton (CYLPlusButtonDeprecated)
+@interface CYLPlusButton(CYLPlusButtonDeprecated)
 
 + (void)registerSubclass CYL_DEPRECATED("Deprecated in 1.6.0. Use `+[CYLPlusButton registerPlusButton]` instead.");
+
++(CGFloat)multiplerInCenterY CYL_DEPRECATED("Deprecated in 1.6.0. Use `+multiplierOfTabBarHeight:` instead.");
 
 @end
 

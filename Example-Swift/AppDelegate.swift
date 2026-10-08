@@ -5,67 +5,25 @@
 //  Copyright © 2018 https://github.com/ChenYilong . All rights reserved.
 //
 
-import UIKit
 import CYLTabBarController
+import UIKit
 
+ 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate,UITabBarControllerDelegate {
-
+class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegate {
     var window: UIWindow?
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-       
+    func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         CYLPlusButtonSubclass.register()
-        
 
-        let mainTabBarVc = MainTabBarController(viewControllers: self.viewControllers(), tabBarItemsAttributes: self.tabBarItemsAttributesForController())
-        
-        self.window = UIWindow()
-        self.window?.frame  = UIScreen.main.bounds
-        self.window?.rootViewController = mainTabBarVc
-        mainTabBarVc.hideTabBarShadowImageView();
-
-        self.window?.makeKeyAndVisible()
-        
-        UITabBar.appearance().backgroundColor = UIColor.white
+        // The window is created in SceneDelegate (UIScene life cycle).
+        //iOS26 不推荐设置 `UITabBar.appearance().backgroundColor` 不仅无法设置背景，同时会干扰 TabBar 里的 Label 未选中颜色，iOS26 里无选中时的Label颜色为系统内部逻辑， 无法自定义。
+//        UITabBar.appearance().backgroundColor = UIColor.white
+//        UITabBar.appearance().unselectedItemTintColor = UIColor.label;
         
         return true
     }
 
-    
-    func viewControllers() -> [UINavigationController]{
-        let home = UINavigationController(rootViewController: HomeViewController())
-        let connection = UINavigationController(rootViewController: ConnectionViewController())
-        let message = UINavigationController(rootViewController: MessageViewController())
-        let personal =   UINavigationController(rootViewController: PersonalViewController())
-        let viewControllers = [home, connection, message, personal]
-        
-        return viewControllers
-        
+    func application(_: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options _: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
-    
-
-    func tabBarItemsAttributesForController() ->  [[String : String]] {
-        
-        let tabBarItemOne = [CYLTabBarItemTitle:"首页",
-                             CYLTabBarItemImage:"home_normal",
-                             CYLTabBarItemSelectedImage:"home_highlight"]
-        
-        let tabBarItemTwo = [CYLTabBarItemTitle:"同城",
-                             CYLTabBarItemImage:"mycity_normal",
-                             CYLTabBarItemSelectedImage:"mycity_highlight"]
-        
-        let tabBarItemThree = [CYLTabBarItemTitle:"消息",
-                               CYLTabBarItemImage:"message_normal",
-                               CYLTabBarItemSelectedImage:"message_highlight"]
-        
-        let tabBarItemFour = [CYLTabBarItemTitle:"我的",
-                              CYLTabBarItemImage:"account_normal",
-                              CYLTabBarItemSelectedImage:"account_highlight"]
-        let tabBarItemsAttributes = [tabBarItemOne,tabBarItemTwo,tabBarItemThree,tabBarItemFour]
-        return tabBarItemsAttributes
-    }
-
-
-
 }
-
